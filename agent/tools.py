@@ -9,8 +9,13 @@ import sqlite3
 import json
 import logging
 from dotenv import load_dotenv
-import chromadb
-from chromadb.utils import embedding_functions
+
+try:
+    import chromadb
+    from chromadb.utils import embedding_functions
+    CHROMADB_AVAILABLE = True
+except ImportError:
+    CHROMADB_AVAILABLE = False
 
 load_dotenv()
 log = logging.getLogger(__name__)
@@ -37,6 +42,8 @@ def _get_conn():
 
 def _get_collections():
     global _chroma_client, _match_col, _player_col
+    if not CHROMADB_AVAILABLE:
+        raise RuntimeError("ChromaDB not available in this environment")
     if _chroma_client is None:
         _chroma_client = chromadb.PersistentClient(path=CHROMA_DIR)
         ef = embedding_functions.SentenceTransformerEmbeddingFunction(model_name=EMBED_MODEL)

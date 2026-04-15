@@ -2,10 +2,6 @@
 fastapi>=0.111.0
 uvicorn[standard]>=0.30.0
 
-# Data processing
-pandas==2.2.3
-numpy>=2.0.0
-
 # Claude API
 anthropic>=0.40.0
 
@@ -19,12 +15,10 @@ tavily-python>=0.3.0
 httpx>=0.27.0
 requests>=2.31.0
 
-# ML models
-xgboost>=2.0.0
+# Data processing (lightweight)
+pandas==2.2.3
+numpy>=1.26.0
+
+# ML simulation (lightweight — no torch/GPU needed)
 scikit-learn>=1.4.0
-
-# Vector store
-chromadb>=0.6.0
-
-# Embeddings
-sentence-transformers==3.0.1
+xgboost>=2.0.0
