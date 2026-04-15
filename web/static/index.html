@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>IPL AI — Cricket Prediction Agent</title>
+  <link rel="stylesheet" href="/static/style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+<!-- ── HEADER ─────────────────────────────────────────────── -->
+<header class="header">
+  <div class="header-inner">
+    <div class="logo">
+      <span class="logo-icon">🏏</span>
+      <span class="logo-text">IPL <span class="logo-accent">AI</span></span>
+    </div>
+    <nav class="nav">
+      <span class="nav-link active" id="nav-home"   onclick="showPage('home')">Predictions</span>
+      <span class="nav-link"        id="nav-stats"  onclick="showPage('stats')">Stats</span>
+      <span class="nav-link"        id="nav-squads" onclick="showPage('squads')">Squads</span>
+    </nav>
+    <div class="header-right">
+      <span class="season-badge">IPL 2026</span>
+      <button class="new-chat-btn" onclick="newChat()">+ New Chat</button>
+    </div>
+  </div>
+</header>
+
+<!-- ── HERO SECTION ───────────────────────────────────────── -->
+<main class="main" id="home-view">
+
+  <section class="hero">
+    <div class="hero-badge">Powered by Claude + Ball-by-ball Database</div>
+    <h1 class="hero-title">
+      Ask me anything about<br />
+      <span class="gradient-text">IPL 2026</span>
+    </h1>
+    <p class="hero-subtitle">Win probabilities · Player matchups · Live predictions · Historical stats</p>
+
+    <!-- Search bar -->
+    <div class="search-container">
+      <div class="search-box">
+        <span class="search-icon">🔍</span>
+        <input
+          id="hero-input"
+          type="text"
+          class="search-input"
+          placeholder="Who will win today's match? Which player will score most runs?"
+          onkeydown="handleHeroKey(event)"
+          autocomplete="off"
+        />
+        <button class="search-btn" onclick="startChat()">
+          <span>Ask</span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Today's matches strip -->
+  <section class="matches-strip" id="matches-strip">
+    <div class="strip-label">TODAY'S MATCHES</div>
+    <div class="matches-list" id="matches-list">
+      <div class="match-skeleton"></div>
+      <div class="match-skeleton"></div>
+    </div>
+  </section>
+
+  <!-- Trending section -->
+  <section class="trending-section">
+    <div class="trending-header">
+      <h2 class="trending-title">
+        <span class="trending-icon">🔥</span> Trending Now
+      </h2>
+      <span class="trending-sub">Based on today's fixtures</span>
+    </div>
+    <div class="trending-grid" id="trending-grid">
+      <!-- Filled by JS -->
+    </div>
+  </section>
+
+  <!-- Media feed: YouTube + News -->
+  <section class="media-section">
+    <div class="trending-header">
+      <h2 class="trending-title">
+        <span class="trending-icon">📺</span> Videos &amp; News
+      </h2>
+      <div style="display:flex;gap:10px;align-items:center">
+        <button class="media-tab active" id="tab-all"    onclick="filterMedia('all')">All</button>
+        <button class="media-tab"        id="tab-video"  onclick="filterMedia('video')">▶ YouTube</button>
+        <button class="media-tab"        id="tab-news"   onclick="filterMedia('news')">📰 News</button>
+      </div>
+    </div>
+    <div class="media-grid" id="media-grid">
+      <div class="media-skeleton"></div>
+      <div class="media-skeleton"></div>
+      <div class="media-skeleton"></div>
+      <div class="media-skeleton"></div>
+    </div>
+  </section>
+
+  <!-- Quick stats bar -->
+  <section class="quick-stats">
+    <div class="stat-card">
+      <div class="stat-value">1,183</div>
+      <div class="stat-label">IPL Matches Analysed</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value">5,146</div>
+      <div class="stat-label">T20 Internationals</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value">69.6%</div>
+      <div class="stat-label">Model AUC</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value">10</div>
+      <div class="stat-label">IPL Teams Covered</div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ── CHAT VIEW ──────────────────────────────────────────── -->
+<div class="chat-view hidden" id="chat-view">
+  <div class="chat-sidebar">
+    <button class="sidebar-new-btn" onclick="newChat()">+ New conversation</button>
+    <div class="sidebar-history" id="sidebar-history">
+      <!-- Chat history items -->
+    </div>
+    <div class="sidebar-footer">
+      <div class="model-info">
+        <span class="model-dot"></span>
+        Claude Sonnet 4.6
+      </div>
+    </div>
+  </div>
+
+  <div class="chat-main">
+    <div class="chat-messages" id="chat-messages"></div>
+
+    <div class="chat-input-area">
+      <!-- Quick suggestion chips -->
+      <div class="suggestion-chips" id="suggestion-chips">
+        <button class="chip" onclick="sendSuggestion(this)">Win probability today</button>
+        <button class="chip" onclick="sendSuggestion(this)">Best batter in form</button>
+        <button class="chip" onclick="sendSuggestion(this)">Top wicket taker</button>
+        <button class="chip" onclick="sendSuggestion(this)">Toss impact analysis</button>
+      </div>
+      <div class="input-row">
+        <textarea
+          id="chat-input"
+          class="chat-textarea"
+          placeholder="Ask about IPL 2026..."
+          rows="1"
+          onkeydown="handleChatKey(event)"
+          oninput="autoResize(this)"
+        ></textarea>
+        <button class="send-btn" id="send-btn" onclick="sendMessage()">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+        </button>
+      </div>
+      <div class="input-footer">IPL AI can make mistakes. Verify with official sources for betting/fantasy decisions.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ── STATS VIEW ─────────────────────────────────────────── -->
+<div class="page-view hidden" id="stats-view">
+  <div class="page-inner">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:28px">
+      <h2 class="page-title" style="margin-bottom:0">📊 IPL 2026 Stats</h2>
+      <div style="display:flex;align-items:center;gap:12px">
+        <span id="stats-updated" style="font-size:12px;color:var(--text2)"></span>
+        <button onclick="refreshStats()" class="refresh-btn">↻ Refresh</button>
+      </div>
+    </div>
+
+    <div class="stats-grid">
+      <!-- Standings -->
+      <div class="stats-card wide">
+        <div class="card-title">🏆 Points Table</div>
+        <div id="standings-table"><div class="loading-text">Loading...</div></div>
+      </div>
+
+      <!-- Top Batters -->
+      <div class="stats-card">
+        <div class="card-title">🏏 Orange Cap Race</div>
+        <div id="batters-table"><div class="loading-text">Loading...</div></div>
+      </div>
+
+      <!-- Top Bowlers -->
+      <div class="stats-card">
+        <div class="card-title">🎯 Purple Cap Race</div>
+        <div id="bowlers-table"><div class="loading-text">Loading...</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── SQUADS VIEW ────────────────────────────────────────── -->
+<div class="page-view hidden" id="squads-view">
+  <div class="page-inner">
+    <h2 class="page-title">👥 IPL 2026 Squads</h2>
+    <div class="team-filter" id="team-filter">
+      <!-- Team buttons filled by JS -->
+    </div>
+    <div id="squads-grid" class="squads-grid">
+      <div class="loading-text">Loading squads...</div>
+    </div>
+  </div>
+</div>
+
+<script src="/static/app.js"></script>
+</body>
+</html>

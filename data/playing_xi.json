@@ -1,0 +1,51 @@
+{
+  "_meta": {
+    "notes": "Update this file on match day with confirmed Playing XIs. The agent reads this automatically.",
+    "how_to_update": "Add a new entry under 'matches' with today's date as key. Set 'confirmed: true' once XI is announced."
+  },
+  "matches": {
+    "2026-04-11": {
+      "match": "CSK vs MI",
+      "venue": "MA Chidambaram Stadium",
+      "confirmed": false,
+      "toss": {
+        "winner": null,
+        "decision": null
+      },
+      "Chennai Super Kings": {
+        "playing_xi": [
+          "Ruturaj Gaikwad",
+          "Sanju Samson",
+          "Dewald Brevis",
+          "Shivam Dube",
+          "MS Dhoni",
+          "Ravindra Jadeja",
+          "Matthew Short",
+          "Khaleel Ahmed",
+          "Noor Ahmad",
+          "Anshul Kamboj",
+          "Mukesh Choudhary"
+        ],
+        "captain": "Ruturaj Gaikwad",
+        "impact_sub": null
+      },
+      "Mumbai Indians": {
+        "playing_xi": [
+          "Rohit Sharma",
+          "Ryan Rickelton",
+          "Suryakumar Yadav",
+          "Tilak Varma",
+          "Hardik Pandya",
+          "Naman Dhir",
+          "Will Jacks",
+          "Jasprit Bumrah",
+          "Trent Boult",
+          "Deepak Chahar",
+          "Allah Ghazanfar"
+        ],
+        "captain": "Hardik Pandya",
+        "impact_sub": null
+      }
+    }
+  }
+}

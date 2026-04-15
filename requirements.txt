@@ -1,0 +1,29 @@
+# Data processing
+pandas==2.2.3
+numpy>=2.0.0
+
+# Database
+# SQLite is built into Python — no extra package needed
+
+# Vector store
+chromadb>=0.6.0
+
+# Embeddings (local, free — sentence-transformers)
+sentence-transformers==3.0.1
+
+# Claude API
+anthropic>=0.40.0
+
+# Telegram bot
+python-telegram-bot==21.4
+
+# Env management
+python-dotenv==1.0.1
+
+# Web search (for live squad/injury/form data)
+tavily-python>=0.3.0
+
+# ML models
+xgboost>=2.0.0
+scikit-learn>=1.4.0
+pyarrow>=15.0.0

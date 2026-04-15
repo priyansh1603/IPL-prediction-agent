@@ -1,0 +1,59 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+dist/
+build/
+
+# Virtual environment
+venv/
+env/
+.venv/
+
+# Environment variables — never commit API keys
+.env
+
+# Large data files — too big for GitHub
+data/processed/ipl.db
+data/processed/ipl.db-shm
+data/processed/ipl.db-wal
+data/processed/ml/
+data/raw/
+data/raw/t20s_json/
+
+# ML models — too big for GitHub
+ml/models/
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+
+# ML models — too big for GitHub
+ml/models/
+
+# Scorecard cache — rebuilt automatically
+data/processed/scorecards/
+
+# Stats cache — rebuilt on deploy
+data/processed/ipl_2026_stats_cache.json
+
+# ChromaDB vector store
+data/chroma/
+data/processed/chroma_db/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.code-workspace
+
+# Logs
+*.log
+logs/
